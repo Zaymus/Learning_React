@@ -5,27 +5,30 @@ function App() {
 	const expenses = [
 		{
 			title: "Toilet Paper",
-			cost: 94.12,
+			amount: 94.12,
 			date: new Date(2020, 7, 14),
 		},
 		{
 			title: "New TV",
-			cost: 799.49,
+			amount: 799.49,
 			date: new Date(2021, 2, 12),
 		},
 		{
 			title: "Car Insurance",
-			cost: 294.67,
+			amount: 294.67,
 			date: new Date(2021, 2, 28),
 		},
 		{
 			title: "New Desk (Wooden)",
-			cost: 450,
+			amount: 450,
 			date: new Date(2021, 5, 12),
 		},
 	];
 
-	const addExpenseHandler = (expense) => {};
+	const addExpenseHandler = (expense) => {
+		expenses.push(expense);
+		console.log(expenses);
+	};
 
 	return (
 		<div>
