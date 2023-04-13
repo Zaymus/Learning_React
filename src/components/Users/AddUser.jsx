@@ -16,12 +16,14 @@ const AddUser = (props) => {
         title:"Invalid Input", 
         message: "Please enter a valid name and age (non-empty values).",
       });
+      return;
     }
     if(+enteredAge < 1) {
       setError({
         title:"Invalid Age", 
         message: "Please enter a valid age (> 0).",
       });
+      return;
     }
     props.onNewUser({name: enteredUsername, age: enteredAge, id: Math.random().toString()});
     setEnteredUsername('');
