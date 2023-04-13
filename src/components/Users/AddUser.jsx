@@ -1,47 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, Fragment, useRef } from "react";
 import Card from "../UI/Card/Card";
 import Button from "../UI/Button/Button";
 import ErrorModal from "../UI/ErrorModal/ErrorModal";
 import classes from './AddUser.module.css'
 
 const AddUser = (props) => {
-  const [enteredUsername, setEnteredUsername] = useState('');
-  const [enteredAge, setEnteredAge] = useState('');
+  const nameInputRef = useRef();
+  const ageInputRef = useRef();
+
   const [error, setError] = useState(null);
 
   const addUserHandler = (event) => {
     event.preventDefault();
+    const enteredUsername = nameInputRef.current.value;
+    const enteredAge = ageInputRef.current.value;
     if(enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
       setError({
         title:"Invalid Input", 
         message: "Please enter a valid name and age (non-empty values).",
       });
+      return;
     }
     if(+enteredAge < 1) {
       setError({
         title:"Invalid Age", 
         message: "Please enter a valid age (> 0).",
       });
+      return;
     }
     props.onNewUser({name: enteredUsername, age: enteredAge, id: Math.random().toString()});
-    setEnteredUsername('');
-    setEnteredAge('');
+    nameInputRef.current.value = '';
+    ageInputRef.current.value = '';
   }
 
   const errorClickHandler = () => {
     setError(null);
   }
 
-  const usernameChangeHandler = (event) => {
-    setEnteredUsername(event.target.value);
-  }
-
-  const ageChangeHandler = (event) => {
-    setEnteredAge(event.target.value);
-  }
-
   return (
-    <div>
+    <Fragment>
       {error && <ErrorModal title={error.title} message={error.message} onClick={errorClickHandler}/> }
       <Card className={classes.input}>
         <form onSubmit={addUserHandler}>
@@ -49,8 +46,7 @@ const AddUser = (props) => {
           <input 
             id="username" 
             type="text" 
-            value={enteredUsername} 
-            onChange={usernameChangeHandler}
+            ref={nameInputRef}
           />
 
           <label htmlFor="age">Age (Years)</label>
@@ -59,14 +55,13 @@ const AddUser = (props) => {
             type="number" 
             min={0} 
             step={1} 
-            value={enteredAge} 
-            onChange={ageChangeHandler}
+            ref={ageInputRef}
           />
 
           <Button type="submit">Add User</Button>
         </form>
       </Card>
-    </div>
+    </Fragment>
   );
 }
 
